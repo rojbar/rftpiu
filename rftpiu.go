@@ -8,7 +8,10 @@ import (
 	"strings"
 )
 
-//OK
+/**
+	ReadMessage returns the rftp message send by the other host. Returns error in
+	case of invalid message or conn.Read failing
+**/
 func ReadMessage(conn net.Conn) (string, error) {
 	reader := bufio.NewReader(conn)
 	message, errM := reader.ReadString(';')
@@ -18,7 +21,10 @@ func ReadMessage(conn net.Conn) (string, error) {
 	return message, nil
 }
 
-//OK
+/**
+	SendMessage sends a rftp message to a tcp connection, it returns error in case of
+	conn.Write failing
+**/
 func SendMessage(conn net.Conn, message string) error {
 	writer := bufio.NewWriter(conn)
 	_, errW := writer.WriteString(message)
@@ -32,7 +38,10 @@ func SendMessage(conn net.Conn, message string) error {
 	return nil
 }
 
-//OK
+/**
+	GetKey returns the value of a key in a rftp message, it returns error when key not found
+	or value not found for provided key, if error != nil string = ""
+**/
 func GetKey(message string, key string) (string, error) {
 	regExp, errReg := regexp.Compile(key + ":" + " ([a-z]|[A-Z]|[0-9])+")
 	if errReg != nil {

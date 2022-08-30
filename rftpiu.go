@@ -84,3 +84,46 @@ func ReadThenWrite(reader io.Reader, writer bufio.Writer, buffer []byte) error {
 
 	return nil
 }
+
+type Queue[T any] struct {
+	Data []T
+	Head int
+	Tail int
+	Size int
+}
+
+func NewQueue[T any](size int) *Queue[T] {
+	return &Queue[T]{Data: make([]T, size+1), Head: 0, Tail: 0, Size: size}
+}
+
+func (queue *Queue[T]) Enqueue(data T) error {
+	if queue.Tail+1 == queue.Head || (queue.Tail == queue.Size && queue.Head == 0) {
+		return errors.New("trying to enqueue full queue")
+	}
+
+	queue.Data[queue.Tail] = data
+	if queue.Tail == queue.Size {
+		queue.Tail = 0
+	} else {
+		queue.Tail += 1
+	}
+
+	return nil
+}
+
+func (queue *Queue[T]) Dequeue() (T, error) {
+	if queue.Head == queue.Tail {
+		var aux T
+		return aux, errors.New("trying to dequeue empty queue")
+	}
+
+	data := queue.Data[queue.Head]
+
+	if queue.Head == queue.Size {
+		queue.Head = 0
+	} else {
+		queue.Head += 1
+	}
+
+	return data, nil
+}

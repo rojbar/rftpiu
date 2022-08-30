@@ -3,6 +3,7 @@ package rftpiu
 import (
 	"bufio"
 	"errors"
+	"io"
 	"net"
 	"regexp"
 	"strings"
@@ -59,4 +60,27 @@ func GetKey(message string, key string) (string, error) {
 	}
 	after = strings.TrimSpace(after)
 	return after, nil
+}
+
+/**
+	Reads to the buffer and writes from the buffer
+**/
+func ReadThenWrite(reader io.Reader, writer bufio.Writer, buffer []byte) error {
+	_, errR := io.ReadFull(reader, buffer)
+	if errR != nil {
+		if errR == io.EOF {
+			print(errR)
+		}
+		return errR
+	}
+	_, errW := writer.Write(buffer)
+	if errW != nil {
+		return errW
+	}
+	errF := writer.Flush()
+	if errF != nil {
+		return errF
+	}
+
+	return nil
 }

@@ -111,6 +111,16 @@ func (queue *Queue[T]) Enqueue(data T) error {
 	return nil
 }
 
+func (queue *Queue[T]) Retrieve() (T, error) {
+	if queue.Head == queue.Tail {
+		var aux T
+		return aux, errors.New("trying to retrieve empty queue")
+	}
+	data := queue.Data[queue.Head]
+
+	return data, nil
+}
+
 func (queue *Queue[T]) Dequeue() (T, error) {
 	if queue.Head == queue.Tail {
 		var aux T

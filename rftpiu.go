@@ -147,3 +147,14 @@ func InitializeLogger() {
 	defer Logger.Sync()
 
 }
+
+/**
+	Given a file size and a chunk size it returns the amount of chunks that can be send, and
+	the size of a remaining chunk in case it cannot be exactly send with the chunkSize provided.
+	If it can, the second return value would be 0
+**/
+func CalculateChunksToSendExactly(sizeFile int, chunkSize int) (int, int) {
+	loops := sizeFile / chunkSize
+	sizeLastChunk := sizeFile % chunkSize
+	return loops, sizeLastChunk
+}

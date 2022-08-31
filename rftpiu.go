@@ -143,7 +143,7 @@ func (queue *Queue[T]) Dequeue() (T, error) {
 var Logger *zap.Logger
 
 func InitializeLogger() {
-	logger, _ := zap.NewProduction()
-	defer logger.Sync()
+	Logger, _ := zap.NewProduction()
+	defer Logger.Sync()
 
 }

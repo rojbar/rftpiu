@@ -7,6 +7,8 @@ import (
 	"net"
 	"regexp"
 	"strings"
+
+	"go.uber.org/zap"
 )
 
 /**
@@ -136,4 +138,12 @@ func (queue *Queue[T]) Dequeue() (T, error) {
 	}
 
 	return data, nil
+}
+
+var Logger *zap.Logger
+
+func InitializeLogger() {
+	logger, _ := zap.NewProduction()
+	defer logger.Sync()
+
 }
